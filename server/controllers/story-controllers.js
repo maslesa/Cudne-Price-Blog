@@ -1,5 +1,7 @@
 const Story = require('../models/Story');
 
+const { sendStoryNotification } = require('../utils/emailNotification');
+
 const getAllStories = async (req, res) => {
     try {
         const stories = await Story.find();
@@ -47,6 +49,8 @@ const postStory = async (req, res) => {
 
         newStory.save();
 
+        await sendStoryNotification(req.userInfo.username, newStory.title, "created");
+
         res.status(200).json({
             success: true,
             message: 'Story posted successfully!',
@@ -76,7 +80,9 @@ const updateStory = async (req, res) => {
 
         const userInputUpdate = req.body;
 
-        const updatedStory = await Story.findByIdAndUpdate(storyId, userInputUpdate, {new: true});
+        const updatedStory = await Story.findByIdAndUpdate(storyId, userInputUpdate, { new: true });
+
+        await sendStoryNotification(req.userInfo.username, updatedStory.title, "updated");
 
         res.status(200).json({
             success: true,
@@ -106,6 +112,8 @@ const deleteStory = async (req, res) => {
         }
 
         await Story.findByIdAndDelete(storyId);
+
+        await sendStoryNotification(req.userInfo.username, story.title, "deleted");
 
         res.status(200).json({
             success: true,

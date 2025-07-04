@@ -12,7 +12,7 @@ const sendLoginCodeEmail = async (code) => {
     });
 
     await transporter.sendMail({
-        from: `"Blog Login" <${process.env.BLOG_EMAIL}>`,
+        from: `"Čudne priče Blog Login" <${process.env.BLOG_EMAIL}>`,
         to: process.env.BLOG_EMAIL,
         subject: 'Admin Login Code',
         html: `<p>Your admin login code is: <b>${code}</b></p>`
