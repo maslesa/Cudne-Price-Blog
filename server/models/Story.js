@@ -16,5 +16,13 @@ const StorySchema = new mongoose.Schema({
     images: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Image'
+    }],
+    tags: [{
+        type: String,
+    }],
+    socialLinks: [{
+        type: String,
     }]
-}, {timestamps: true});
+}, { timestamps: true });
+
+module.exports = mongoose.model('Story', StorySchema);
